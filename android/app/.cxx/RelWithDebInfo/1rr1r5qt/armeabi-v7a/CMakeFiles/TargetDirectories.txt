@@ -1,0 +1,2 @@
+C:/Users/nobs.is.coding/Desktop/documentrecovery/android/app/.cxx/RelWithDebInfo/1rr1r5qt/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/nobs.is.coding/Desktop/documentrecovery/android/app/.cxx/RelWithDebInfo/1rr1r5qt/armeabi-v7a/CMakeFiles/rebuild_cache.dir
