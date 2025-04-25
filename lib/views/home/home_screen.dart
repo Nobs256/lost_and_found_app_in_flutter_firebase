@@ -78,6 +78,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../src/app_color.dart';
+import 'location.dart';
 import 'policeforms/formsview.dart';
 import 'posts/Posts_view.dart';
 import 'posts/add_post_item.dart';
@@ -98,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     PostViewScreen(),
     FormsView(),
     AddPostItem(),
+    MapPage(),
     ProfilePage(),
   ];
 
@@ -134,10 +136,13 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           backgroundColor: AppColor.defaultColor,
           elevation: 1.0,
-          title: Image.asset(
-            'assets/images/lost-found-banner.png',
-            height: 40,
-            width: 110,
+          title: Text(
+            'DOCFINDER',
+            style: TextStyle(
+              fontSize: 35, // Adjust the font size as needed
+              fontWeight: FontWeight.bold, // You can change the font weight
+              color: Colors.white, // Change the text color if needed
+            ),
           ),
           automaticallyImplyLeading: false,
         ),
@@ -165,6 +170,11 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.add_to_photos_sharp, color: AppColor.secondaryColor),
               label: 'Add Post',
+              backgroundColor: AppColor.defaultColor,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.location_on, color: AppColor.secondaryColor),
+              label: 'Map',
               backgroundColor: AppColor.defaultColor,
             ),
             BottomNavigationBarItem(

@@ -21,14 +21,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var passwordController = TextEditingController();
   var phoneController = TextEditingController();
   var nameController = TextEditingController();
-  var ninController = TextEditingController();
-  var locationController = TextEditingController();
+  // var ninController = TextEditingController();
+  // var locationController = TextEditingController();
   var categoryController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false; // Local state for loading
 
   // List of locations and categories
-  final List<String> locations = ['Kakoba', 'Kamukuzi', 'Kihumuru', 'City'];
+  // final List<String> locations = ['Kakoba', 'Kamukuzi', 'Kihumuru', 'City Town', 'Rwebikona'];
   final List<String> categories = ['User', 'Institution', 'Police'];
 
   @override
@@ -109,52 +109,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
               keyboardType: TextInputType.visiblePassword,
               // obscureText: true,
             ),
-            SizedBox(height: 25),
-            TxtBox(
-              label: ' NIN',
-              txtController: ninController,
-              icon: Icons.person_rounded,
-              keyboardType: TextInputType.name,
-            ),
-            SizedBox(height: 25),
-            // Dropdown for location
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Choose your location',
-                prefixIcon: Icon(Icons.location_on, color: AppColor.iconsColor),
-                labelStyle: TextStyle(
-                  color: AppColor.txtShade,
-                ),
-                floatingLabelStyle: TextStyle(
-                  color: AppColor.defaultColor,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColor.secondaryColor,
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColor.defaultColor,
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-              ),
-              value: selectedLocation,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedLocation = newValue;
-                });
-              },
-              items: locations.map<DropdownMenuItem<String>>((String location) {
-                return DropdownMenuItem<String>(
-                  value: location,
-                  child: Text(location),
-                );
-              }).toList(),
-              validator: (value) => value == null ? 'Please select a location' : null,
-            ),
+            // SizedBox(height: 25),
+            // TxtBox(
+            //   label: 'NIN',
+            //   txtController: ninController,
+            //   icon: Icons.person_rounded,
+            //   keyboardType: TextInputType.name,
+            // ),
+            // SizedBox(height: 25),
+            // // Dropdown for location
+            // DropdownButtonFormField<String>(
+            //   decoration: InputDecoration(
+            //     labelText: 'Choose your location',
+            //     prefixIcon: Icon(Icons.location_on, color: AppColor.iconsColor),
+            //     labelStyle: TextStyle(
+            //       color: AppColor.txtShade,
+            //     ),
+            //     floatingLabelStyle: TextStyle(
+            //       color: AppColor.defaultColor,
+            //     ),
+            //     enabledBorder: OutlineInputBorder(
+            //       borderSide: BorderSide(
+            //         color: AppColor.secondaryColor,
+            //       ),
+            //       borderRadius: BorderRadius.circular(25),
+            //     ),
+            //     focusedBorder: OutlineInputBorder(
+            //       borderSide: BorderSide(
+            //         color: AppColor.defaultColor,
+            //       ),
+            //       borderRadius: BorderRadius.circular(25),
+            //     ),
+            //   ),
+            //   value: selectedLocation,
+            //   onChanged: (String? newValue) {
+            //     setState(() {
+            //       selectedLocation = newValue;
+            //     });
+            //   },
+            //   items: locations.map<DropdownMenuItem<String>>((String location) {
+            //     return DropdownMenuItem<String>(
+            //       value: location,
+            //       child: Text(location),
+            //     );
+            //   }).toList(),
+            //   validator: (value) => value == null ? 'Please select a location' : null,
+            // ),
             SizedBox(height: 25),
             // Dropdown for category
             DropdownButtonFormField<String>(
@@ -227,8 +227,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     'name': nameController.text,
                     'phone': phoneController.text,
                     'email': emailController.text,
-                    'nin': ninController.text,
-                    'location': selectedLocation,
+                    // 'nin': ninController.text,
+                    // 'location': selectedLocation,
                     'category': selectedCategory,
                   });
 

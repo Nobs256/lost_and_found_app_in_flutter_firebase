@@ -23,6 +23,7 @@ class _AddPostItemState extends State<AddPostItem> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _ninController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _lostItemController = TextEditingController();
   final TextEditingController _areaoflossing = TextEditingController();
@@ -71,6 +72,12 @@ class _AddPostItemState extends State<AddPostItem> {
               _buildFormField(
                 controller: _fullNameController,
                 label: "Full Name",
+                icon: Icons.person_outline,
+              ),
+              const SizedBox(height: 20),
+              _buildFormField(
+                controller: _ninController,
+                label: "NIN",
                 icon: Icons.person_outline,
               ),
               const SizedBox(height: 20),
@@ -166,10 +173,10 @@ class _AddPostItemState extends State<AddPostItem> {
                           _image != null ? basename(_image!.path) : "No image selected",
                           style: const TextStyle(fontSize: 12, color: Colors.grey),
                         ),
-                        const Text(
-                          "Note: Please if you don't have a document photo to upload leave the photo field blank.",
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
+                        // const Text(
+                        //   "Note: Please if you don't have a document photo to upload leave the photo field blank.",
+                        //   style: TextStyle(fontSize: 12, color: Colors.grey),
+                        // ),
                       ],
                     ),
                   ),
@@ -208,32 +215,11 @@ class _AddPostItemState extends State<AddPostItem> {
                       //       'uniqueId': uniqueId,
                       //       'image': imageUrl,
                       //     };
-                      // onPressed: () async {
-                      //   if (_formKey.currentState!.validate()) {
-                      //     final DatabaseHelper _databaseHelper = DatabaseHelper();
-                      //     await _databaseHelper.insertImage(_image!);
-                      //     final String? imageUrl = 'assets/images/post.jpeg'; // Use a default image URL
-                      //     final Uuid uuid = Uuid();
-                      //     final String uniqueId = uuid.v4();
-                      //     Map<String, dynamic> lostItem = {
-                      //       'name': _fullNameController.text,
-                      //       'address': _addressController.text,
-                      //       'lostItem': _lostItemController.text,
-                      //       'areaOfLossing': _areaoflossing.text,
-                      //       'placementStation': _placementstation.text,
-                      //       'institution':  _selectedInstitution,
-                      //       'description': _descriptionController.text,
-                      //       'reward': _rewardsController.text,
-                      //       'status': 'lost',
-                      //       'postTime': DateTime.now().toString(),
-                      //       'ownerId': _auth.currentUser!.uid,
-                      //       'uniqueId': uniqueId,
-                      //       'image': imageUrl,
-                      //     };
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           final DatabaseHelper _databaseHelper = DatabaseHelper();
                           await _databaseHelper.insertImage(_image!);
+                          final String? imageUrl = 'assets/images/post.jpeg'; // Use a default image URL
                           final Uuid uuid = Uuid();
                           final String uniqueId = uuid.v4();
                           Map<String, dynamic> lostItem = {
@@ -249,8 +235,38 @@ class _AddPostItemState extends State<AddPostItem> {
                             'postTime': DateTime.now().toString(),
                             'ownerId': _auth.currentUser!.uid,
                             'uniqueId': uniqueId,
-                            'image': 'assets/images/post.jpeg',
+                            'image': imageUrl,
                           };
+  //                         onPressed: () async {
+  // if (_formKey.currentState!.validate()) {
+  //   final DatabaseHelper _databaseHelper = DatabaseHelper();
+    
+  //   // Only insert the image if it is not null
+  //   if (_image != null) {
+  //     await _databaseHelper.insertImage(_image!);
+  //   }
+
+  //   final String? imageUrl = _image != null 
+  //       ? await uploadImage(_image) // Upload the image if it exists
+  //       : 'assets/images/post.jpeg'; // Use a default image URL if no image is provided
+
+  //   final Uuid uuid = Uuid();
+  //   final String uniqueId = uuid.v4();
+  //   Map<String, dynamic> lostItem = {
+  //     'name': _fullNameController.text,
+  //     'address': _addressController.text,
+  //     'lostItem': _lostItemController.text,
+  //     'areaOfLossing': _areaoflossing.text,
+  //     'placementStation': _placementstation.text,
+  //     'institution': _selectedInstitution,
+  //     'description': _descriptionController.text,
+  //     'reward': _rewardsController.text,
+  //     'status': 'lost',
+  //     'postTime': DateTime.now().toString(),
+  //     'ownerId': _auth.currentUser !.uid,
+  //     'uniqueId': uniqueId,
+  //     'image': imageUrl,
+  //   };
 
                           try {
                             // Insert data into Firestore

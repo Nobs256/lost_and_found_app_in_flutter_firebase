@@ -17,8 +17,6 @@ class _ProfilePageState extends State<ProfilePage> {
   String? _name;
   String? _phone;
   String? _email;
-  String? _nin;
-  String? _location;
   String? _category;
 
   @override
@@ -36,8 +34,6 @@ class _ProfilePageState extends State<ProfilePage> {
       _name = userData['name'];
       _phone = userData['phone'];
       _email = userData['email'];
-      _nin = userData['nin'];
-      _location = userData['location'];
       _category = userData['category'];
     });
   }
@@ -180,36 +176,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             Text(
                               _email!,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              'NIN',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            Text(
-                              _nin!,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            SizedBox(height: 16),
-                            Text(
-                              'Location',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey.shade600,
-                              ),
-                            ),
-                            Text(
-                              _location!,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.black87,
