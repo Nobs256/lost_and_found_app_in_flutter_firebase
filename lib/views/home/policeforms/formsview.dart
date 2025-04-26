@@ -52,12 +52,12 @@ class FormCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Image.asset(
-              'assets/images/lost-found-banner.png',
-              height: 60, // Set the height to 100
-              fit: BoxFit.cover, // Maintain the aspect ratio
-            ),
-            const SizedBox(height: 16),
+            // Image.asset(
+            //   'assets/images/lost-found-banner.png',
+            //   height: 60, // Set the height to 100
+            //   fit: BoxFit.cover, // Maintain the aspect ratio
+            // ),
+            // const SizedBox(height: 16),
             Text(
               'Serial no: ${document['uniqueId']}',
               style: TextStyle(
@@ -65,6 +65,7 @@ class FormCard extends StatelessWidget {
               ),
             ),
             Text('Name: ${document['name']}'),
+            // Text('NIN: ${document['nin']}'),
             Text('Address: ${document['address']}'),
             Text('Lost Item: ${document['lostItem']}'),
             Text('Area of Lossing: ${document['areaOfLossing']}'),
@@ -73,8 +74,8 @@ class FormCard extends StatelessWidget {
             Text('Description: ${document['description']}'),
             Text('Status: ${document['status']}'),
             Text('Post Time: ${document['postTime']}'),
-            if (document['image'] != null)
-              Image.network(document['image']),
+            // if (document['image'] != null)
+            //   Image.network(document['image']),
           ],
         ),
       ),

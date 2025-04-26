@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
@@ -34,7 +33,7 @@ class _AddPostItemState extends State<AddPostItem> {
   File? _image;
 
   String? _selectedInstitution;
-  final List<String> _institutions = ['NIRA', 'UNEB', 'MUST'];
+  final List<String> _institutions = ['NIRA', 'UNEB', 'MUST','MUBS', 'BSU', 'URA', 'BANK'];
 
 
   Future<void> _selectImage() async {
@@ -47,16 +46,6 @@ class _AddPostItemState extends State<AddPostItem> {
         _image = null;
       }
     });
-  }
-  Future<String?> uploadImage(File? image) async {
-    if (image != null) {
-      final FirebaseStorage _storage = FirebaseStorage.instance;
-      final Reference reference = _storage.ref().child('images/${DateTime.now().millisecondsSinceEpoch}');
-      await reference.putFile(image);
-      return await reference.getDownloadURL();
-    } else {
-      return 'assets/images/post.jpeg';
-    }
   }
 
   @override
@@ -75,10 +64,16 @@ class _AddPostItemState extends State<AddPostItem> {
                 icon: Icons.person_outline,
               ),
               const SizedBox(height: 20),
+              // _buildFormField(
+              //   controller: _ninController,
+              //   label: "NIN",
+              //   icon: Icons.person_outline,
+              // ),
               _buildFormField(
                 controller: _ninController,
-                label: "NIN",
+                label: "NIN (Optional)", // Updated label to indicate it's optional
                 icon: Icons.person_outline,
+                isOptional: true, // New parameter to indicate optional field
               ),
               const SizedBox(height: 20),
               _buildFormField(
@@ -147,8 +142,9 @@ class _AddPostItemState extends State<AddPostItem> {
               const SizedBox(height: 20),
               _buildFormField(
                 controller: _rewardsController,
-                label: "reward",
+                label: "reward (Optional)",
                 icon: Icons.money_sharp,
+                isOptional: true,
               ),
               const SizedBox(height: 30),
               Row(
@@ -158,7 +154,7 @@ class _AddPostItemState extends State<AddPostItem> {
                       children: [
                         TextButton.icon(
                           icon: const Icon(Icons.camera_alt_outlined, size: 22),
-                          label: const Text("Add Photo"),
+                          label: const Text("Add Photo (Optional)"),
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.blue,
                             padding: const EdgeInsets.symmetric(vertical: 15),
@@ -193,80 +189,32 @@ class _AddPostItemState extends State<AddPostItem> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      
-
-                      // onPressed: () async {
-                      //   if (_formKey.currentState!.validate()) {
-                      //     final String? imageUrl = await uploadImage(_image);
-                      //     final Uuid uuid = Uuid();
-                      //     final String uniqueId = uuid.v4();
-                      //     Map<String, dynamic> lostItem = {
-                      //       'name': _fullNameController.text,
-                      //       'address': _addressController.text,
-                      //       'lostItem': _lostItemController.text,
-                      //       'areaOfLossing': _areaoflossing.text,
-                      //       'placementStation': _placementstation.text,
-                      //       'institution':  _selectedInstitution,
-                      //       'description': _descriptionController.text,
-                      //       'reward': _rewardsController.text,   
-                      //       'status': 'lost',
-                      //       'postTime': DateTime.now().toString(),
-                      //       'ownerId': _auth.currentUser!.uid,
-                      //       'uniqueId': uniqueId,
-                      //       'image': imageUrl,
-                      //     };
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           final DatabaseHelper _databaseHelper = DatabaseHelper();
-                          await _databaseHelper.insertImage(_image!);
-                          final String? imageUrl = 'assets/images/post.jpeg'; // Use a default image URL
+                          
+                          // Only insert the image if it is not null
+                          if (_image != null) {
+                            await _databaseHelper.insertImage(_image!);
+                          }
+
                           final Uuid uuid = Uuid();
                           final String uniqueId = uuid.v4();
                           Map<String, dynamic> lostItem = {
                             'name': _fullNameController.text,
+                            'nin': _ninController.text,
                             'address': _addressController.text,
                             'lostItem': _lostItemController.text,
                             'areaOfLossing': _areaoflossing.text,
                             'placementStation': _placementstation.text,
-                            'institution':  _selectedInstitution,
+                            'institution': _selectedInstitution,
                             'description': _descriptionController.text,
                             'reward': _rewardsController.text,
                             'status': 'lost',
                             'postTime': DateTime.now().toString(),
-                            'ownerId': _auth.currentUser!.uid,
+                            'ownerId': _auth.currentUser !.uid,
                             'uniqueId': uniqueId,
-                            'image': imageUrl,
                           };
-  //                         onPressed: () async {
-  // if (_formKey.currentState!.validate()) {
-  //   final DatabaseHelper _databaseHelper = DatabaseHelper();
-    
-  //   // Only insert the image if it is not null
-  //   if (_image != null) {
-  //     await _databaseHelper.insertImage(_image!);
-  //   }
-
-  //   final String? imageUrl = _image != null 
-  //       ? await uploadImage(_image) // Upload the image if it exists
-  //       : 'assets/images/post.jpeg'; // Use a default image URL if no image is provided
-
-  //   final Uuid uuid = Uuid();
-  //   final String uniqueId = uuid.v4();
-  //   Map<String, dynamic> lostItem = {
-  //     'name': _fullNameController.text,
-  //     'address': _addressController.text,
-  //     'lostItem': _lostItemController.text,
-  //     'areaOfLossing': _areaoflossing.text,
-  //     'placementStation': _placementstation.text,
-  //     'institution': _selectedInstitution,
-  //     'description': _descriptionController.text,
-  //     'reward': _rewardsController.text,
-  //     'status': 'lost',
-  //     'postTime': DateTime.now().toString(),
-  //     'ownerId': _auth.currentUser !.uid,
-  //     'uniqueId': uniqueId,
-  //     'image': imageUrl,
-  //   };
 
                           try {
                             // Insert data into Firestore
@@ -303,42 +251,43 @@ class _AddPostItemState extends State<AddPostItem> {
   }
 
   Widget _buildFormField({
-  required TextEditingController? controller,
-  required String label,
-  required IconData icon,
-  bool isDropdown = false,
-  List<String>? items,
-  Function? onChanged,
-  String? value,
-    }) {
-      if (isDropdown) {
-        return DropdownButtonFormField(
-          decoration: InputDecoration(
-            labelText: label,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            prefixIcon: Icon(icon),
+    required TextEditingController? controller,
+    required String label,
+    required IconData icon,
+    bool isDropdown = false,
+    List<String>? items,
+    Function? onChanged,
+    String? value,
+    bool isOptional = false, // New parameter for optional fields
+  }) {
+    if (isDropdown) {
+      return DropdownButtonFormField(
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please select an institution';
-            }
-            return null;
-          },
-          items: items?.map((institution) {
-            return DropdownMenuItem(
-              value: institution,
-              child: Text(institution),
-            );
-          }).toList(),
-          onChanged: (value) {
-            if (onChanged != null) {
-              onChanged(value);
-            }
-          },
-          value: value,
-        );
+          prefixIcon: Icon(icon),
+        ),
+        validator: (value) {
+          if (!isOptional && (value == null || value.isEmpty)) {
+            return 'Please select an institution';
+          }
+          return null;
+        },
+        items: items?.map((institution) {
+          return DropdownMenuItem(
+            value: institution,
+            child: Text(institution),
+          );
+        }).toList(),
+        onChanged: (value) {
+          if (onChanged != null) {
+            onChanged(value);
+          }
+        },
+        value: value,
+      );
       } else {
         return TextFormField(
           controller: controller,
@@ -351,7 +300,8 @@ class _AddPostItemState extends State<AddPostItem> {
             hintText: "Enter your $label",
           ),
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            // Allow empty value if the field is optional
+            if (!isOptional && (value == null || value.isEmpty)) {
               return 'Please enter your $label';
             }
             return null;

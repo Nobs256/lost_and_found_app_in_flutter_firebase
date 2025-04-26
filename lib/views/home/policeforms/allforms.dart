@@ -245,6 +245,7 @@ class _AllformsViewState extends State<AllformsView> {
 Widget _buildAddCase() {
   final _formKey = GlobalKey<FormState>();
   final _caseNumberController = TextEditingController();
+  final _ninController = TextEditingController();
   final _reporterNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
   final _itemLostController = TextEditingController();
@@ -284,6 +285,14 @@ Widget _buildAddCase() {
           ),
           const SizedBox(height: 16),
           TextFormField(
+            controller: _ninController,
+            decoration: const InputDecoration(
+              labelText: 'NIN',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
             controller: _phoneNumberController,
             decoration: const InputDecoration(
               labelText: 'Phone Number',
@@ -318,6 +327,7 @@ Widget _buildAddCase() {
                   await _firestore.collection('cases').add({
                     'caseNumber': _caseNumberController.text,
                     'reporterName': _reporterNameController.text,
+                    'nin': _ninController.text,
                     'phoneNumber': _phoneNumberController.text,
                     'itemLost': _itemLostController.text,
                     'status': 'up for claim', // Set initial status
@@ -327,6 +337,7 @@ Widget _buildAddCase() {
                   );
                   _caseNumberController.clear();
                   _reporterNameController.clear();
+                  _ninController.clear();
                   _phoneNumberController.clear();
                   _itemLostController.clear();
                 } catch (e) {
@@ -376,12 +387,12 @@ class FormCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Image.asset(
-              'assets/images/lost-found-banner.png',
-              height: 60, // Set the height to 100
-              fit: BoxFit.cover, // Maintain the aspect ratio
-            ),
-            const SizedBox(height: 16),
+            // Image.asset(
+            //   'assets/images/lost-found-banner.png',
+            //   height: 60, // Set the height to 100
+            //   fit: BoxFit.cover, // Maintain the aspect ratio
+            // ),
+            // const SizedBox(height: 16),
             Text(
               'Serial no: ${document['uniqueId']}',
               style: TextStyle(
@@ -389,6 +400,7 @@ class FormCard extends StatelessWidget {
               ),
             ),
             Text('Name: ${document['name']}'),
+            // Text('NIN: ${document['nin']}'),
             Text('Address: ${document['address']}'),
             Text('Lost Item: ${document['lostItem']}'),
             Text('Area of Lossing: ${document['areaOfLossing']}'),
@@ -397,8 +409,8 @@ class FormCard extends StatelessWidget {
             Text('Description: ${document['description']}'),
             Text('Status: ${document['status']}'),
             Text('Post Time: ${document['postTime']}'),
-            if (document['image'] != null)
-              Image.network(document['image']),
+            // if (document['image'] != null)
+            //   Image.network(document['image']),
           ],
         ),
       ),
@@ -420,6 +432,7 @@ class CaseCard extends StatelessWidget {
           children: [
             Text('Case Number: ${document['caseNumber']}'),
             Text('Reporter Name: ${document['reporterName']}'),
+            Text('Reporter NIN: ${document['nin']}'),
             Text('Phone Number: ${document['phoneNumber']}'),
             Text('Item Lost: ${document['itemLost']}'),
             Text('Case Status: ${document['status']}'),

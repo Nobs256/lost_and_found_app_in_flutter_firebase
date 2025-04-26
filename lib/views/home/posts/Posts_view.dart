@@ -110,7 +110,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                 return PostCard(
                   postId: post['id'] ?? '',
                   userName: post['name'] ?? '',
-                  nin: post['nin'] ?? '',
+                  nin: post['nin'] ??'',
                   userImage: 'assets/images/profile.png',
                   postTime: post['postTime'] != null
                       ? DateTime.parse(post['postTime'])
@@ -142,7 +142,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
   Widget _buildFilter() {
     return StreamBuilder<QuerySnapshot>(
       stream:
-          _firestore.collection('lostItems').orderBy('postTime').snapshots(),
+          _firestore.collection('lostItems').orderBy('postTime', descending: true).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.docs.isEmpty) {
@@ -258,7 +258,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
     return FutureBuilder(
       future: Future.wait([
         DatabaseHelper().getImages(),
-        _firestore.collection('lostItems').orderBy('postTime').get(),
+        _firestore.collection('lostItems').orderBy('postTime' ,descending: true).get(),
       ]),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -284,7 +284,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
                 return PostCard(
                   postId: post['id'] ?? '',
                   userName: post['name'] ?? '',
-                  nin: post['nin'] ?? '',
+                  nin: '',
                   userImage: 'assets/images/profile.png',
                   postTime: post['postTime'] != null
                       ? DateTime.parse(post['postTime'])
@@ -414,6 +414,24 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
 
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 12),
+                height: 160, // Reduced image height
+                width: double.infinity,
+                child: File(widget.postImage).existsSync()
+                    ? Image.file(
+                        File(widget.postImage),
+                        fit: BoxFit.cover,
+                      )
+                    : Icon(
+                        Icons.image,
+                        size: 100,
+                        color: Colors.grey[400],
+                      ),
+              ),
+            ),
             // ClipRRect(
             //   borderRadius: BorderRadius.circular(10),
             //   child: Container(
@@ -425,30 +443,12 @@ class _PostCardState extends State<PostCard> {
             //             File(widget.postImage),
             //             fit: BoxFit.cover,
             //           )
-            //         : Icon(
-            //             Icons.image,
-            //             size: 100,
-            //             color: Colors.grey[400],
+            //         : Image.asset(
+            //             'assets/images/logo.png', // Show the logo image from assets
+            //             fit: BoxFit.cover, // Adjust the fit as needed
             //           ),
             //   ),
             // ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 12),
-                height: 180, // Reduced image height
-                width: double.infinity,
-                child: File(widget.postImage).existsSync()
-                    ? Image.file(
-                        File(widget.postImage),
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(
-                        'assets/images/logo.png', // Show the logo image from assets
-                        fit: BoxFit.cover, // Adjust the fit as needed
-                      ),
-              ),
-            ),
 
             // Interaction Icons and Status
             Padding(
@@ -818,7 +818,7 @@ class _PostCardState extends State<PostCard> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('User  Name: ${widget.userName}'),
-              Text('Post NIN: ${widget.nin}'),
+              Text('NIN: ${widget.nin}'),
               Text('Address: ${widget.address}'),
               Text('Lost Item: ${widget.lostItem}'),
               Text('Area of Lossing: ${widget.areaOfLossing}'),
